@@ -1,3 +1,4 @@
+#-*- encoding: utf-8 -*-
 # TurtleOWL, a library for bootstrapping OWL ontologies.
 # Copyright © 2018 Alessio Zamboni <zambotn@gmail.com>
 #
@@ -50,18 +51,18 @@ class Node(object):
         :returns: turtle string
 
         """
-        txt = ["<{}> rdf:type owl:Class".format(self._uri)]
+        txt = [u"<{}> rdf:type owl:Class".format(self._uri)]
         if self._superclass:
-            txt.append("\trdfs:subClassOf <{}>".format(self._superclass))
+            txt.append(u"\trdfs:subClassOf <{}>".format(self._superclass))
         if self._annotations:
             for a, vals in self._annotations.iteritems():
                 values = []
                 for (val, lang) in vals:
                     if lang:
-                        values.append("\"{}\"@{}".format(val, lang))
+                        values.append(u"\"{}\"@{}".format(val, lang))
                     else:
-                        values.append("\"{}\"".format(val))
-                txt.append("\t{} {}".format(a, ",\n\t\t".join(values)))
+                        values.append(u"\"{}\"".format(val))
+                txt.append(u"\t{} {}".format(a, ",\n\t\t".join(values)))
         return ";\n".join(txt) + " .\n"
 
 
@@ -87,7 +88,7 @@ class TurtleOWL(object):
 
         """
         if not name is None:
-            return self._baseuri + "#" + name
+            return unicode(self._baseuri + "#" + name.replace(' ', '_'))
         else:
             return None
 
@@ -133,7 +134,7 @@ class TurtleOWL(object):
         :returns: return the ontology in turtle format
 
         """
-        txt = "@prefix : <{0}#> .\n" +\
+        txt = u"@prefix : <{0}#> .\n" +\
                 "@prefix owl: <http://www.w3.org/2002/07/owl#> .\n" +\
                 "@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .\n" +\
                 "@prefix xml: <http://www.w3.org/XML/1998/namespace> .\n" +\
